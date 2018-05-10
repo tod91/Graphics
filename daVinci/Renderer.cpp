@@ -15,9 +15,36 @@
 #ifdef __APPLE__
 #define EXPORT __attribute__((visibility("default")))
 
-// TODO: implement a winddows export
 #elif _WIN32
-#define EXPORT
+#define EXPORT __declspec(dllexport)
+#endif
+
+#ifdef DEBUG
+#include "debugbreak.h"
+
+#define ASSERT(x) if(!(x)) debug_break();
+#define GLCall(x) GLClearError();\
+ x;\
+ ASSERT(GLLogCall(#x, __FILE__, __LINE__));
+
+
+static void GLClearError()
+{
+    while(glGetError());
+}
+
+static bool GLLogCall(const char* function, const char* file, int line)
+{
+    if(GLenum error = glGetError())
+    {
+        printf("[OpenGL Error] (%d) %s %s  %d", error, function, file, line);
+        return false;
+    }
+    return true;
+}
+#else 
+#define GLCall(x) x;
+
 #endif
 
 Renderer::Renderer(const unsigned short windowWidth, const unsigned short windowHeight)
@@ -42,6 +69,12 @@ Renderer::Renderer(const unsigned short windowWidth, const unsigned short window
 Renderer::~Renderer()
 {
     rpmalloc_finalize();
+}
+
+void Renderer::initGLResources()
+{
+    GLCall(glGenBuffers(1, &VBO));
+    
 }
 
 void Renderer::render()
@@ -90,9 +123,9 @@ void Renderer::releaseShaderSource(char* shaderSource)
 
 long Renderer::getShaderFileSize(FILE* file)
 {
-    fseek(file, 0L, SEEK_END);
+    fseek(file, 0, SEEK_END);
     long retVal = ftell(file);
-    fseek(file, 0L, SEEK_SET);
+    fseek(file, 0, SEEK_SET);
     return retVal;
 }
 

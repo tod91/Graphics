@@ -22,12 +22,15 @@ public:
     void render();
     
     void releaseShaderSource(char* shaderSource);
+    void initGLResources();
+    void compileShader();
 private: // Methods
     
     bool    loadShaderSource(const char* shaderFileName, char** shaderSourceCode);
     long    getShaderFileSize(FILE* fileHandle);
     
 private: // Data
+    unsigned VBO;
     
     std::unique_ptr<Window> m_Window;
 };
