@@ -9,7 +9,7 @@
 #ifndef Window_hpp
 #define Window_hpp
 
-#include <GLFW/glfw3.h>
+#include <glfw3.h>
 
 //=============================================================================
 /// @brief  A window class for displaying the graphic renderings on the screen.
@@ -30,7 +30,7 @@ public:
     ~Window();
     
     bool createWindow(const unsigned short width, const unsigned short heigh);
-    GLFWwindow* getWindow(){return window;}
+    GLFWwindow* getWindow(){ return window; }
     
 private:
     GLFWwindow* window;

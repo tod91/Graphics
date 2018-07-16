@@ -5,11 +5,12 @@
 //  Created by Todor Ivanov on 5/25/17.
 //  Copyright © 2017 Todor Ivanov. All rights reserved.
 //
+#include "Types.hpp"
+#include "Sorting.hpp"
 
 #include <stdlib.h>
 #include <algorithm>
-#include "Types.hpp"
-#include "Sorting.hpp"
+
 
 static void BottomUpMerge(Vertex3D* A, Vertex3D* B, const unsigned left, const unsigned mid, const unsigned right)
 {

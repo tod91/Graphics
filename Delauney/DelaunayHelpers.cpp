@@ -5,8 +5,10 @@
 //  Created by Todor Ivanov on 5/25/17.
 //  Copyright © 2017 Todor Ivanov. All rights reserved.
 //
-#include <stdlib.h>
+
 #include "Delaunay.hpp"
+#include <stdio.h>
+#include <stdlib.h>
 
 
 bool Delaunay::GetFileInput(const char* fileName)
@@ -26,8 +28,8 @@ bool Delaunay::GetFileInput(const char* fileName)
         return false;
     }
     
-    points = (Vertex3D*) malloc (sizeof(Vertex3D) * numOfPoints);
-    if(!points)
+    points3D = (Vertex3D*) malloc (sizeof(Vertex3D) * numOfPoints);
+    if(!points3D)
     {
         fprintf(stderr, "Error, cannot allocate memory\n");
         return false;
@@ -35,7 +37,7 @@ bool Delaunay::GetFileInput(const char* fileName)
     
     for(int i = 0; i < numOfPoints; ++i)
     {
-        if(fscanf(file, "%f %f %f", &points[i].x, &points[i].y, &points[i].height) != 3)
+        if(fscanf(file, "%f %f %f", &points3D[i].x, &points3D[i].y, &points3D[i].height) != 3)
         {
             fprintf(stderr, "Warning, unsuccessful read of points at index [%d] from file %s\n",i ,fileName);
         }
@@ -56,8 +58,8 @@ bool Delaunay::SplitPointsArray()
     }
     
     // allocating 2 more points for the outermost triangle
-    coords = (Vertex2D*) malloc(sizeof(Vertex2D) * (numOfPoints + 2));
-    if(!coords)
+    coords2D = (Vertex2D*) malloc(sizeof(Vertex2D) * (numOfPoints + 2));
+    if(!coords2D)
     {
         fprintf(stderr, "Error, cannot allocate memory for the coords array.\n");
         free(heights);
@@ -67,12 +69,12 @@ bool Delaunay::SplitPointsArray()
     //TODO make a check for matching points
     for (size_t i = 0; i < numOfPoints; ++i)
     {
-        coords[i] = points[i];
-        heights[i] = points[i].height;
+        coords2D[i] = points3D[i];
+        heights[i] = points3D[i].height;
     }
     
-    free(points);
-    points = NULL;
+    free(points3D);
+    points3D = NULL;
     
     return true;
 }

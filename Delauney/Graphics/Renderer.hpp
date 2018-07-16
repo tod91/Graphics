@@ -11,8 +11,6 @@
 
 #include "Window.hpp"
 
-#define SOURCE_SIZE 1024
-
 class Renderer
 {
 public:
@@ -20,16 +18,17 @@ public:
     ~Renderer();
     
     void render();
+    
 private:
-    bool loadShader(const char* shaderFileName, char* shaderSourceCode);
+    bool     loadShader(const char* shaderFileName, char* shaderSourceCode);
     unsigned getShaderFileSize(const char* shaderFileName);
     
-    Window window;
-    
-    char* vertexSourceCode;
-    char* fragmentSourceCode;
+    char*       vertexSourceCode;
+    char*       fragmentSourceCode;
     
     const char* vertexShaderFileName;
     const char* fragmentShaderFileName;
+    
+    Window m_Window;
 };
 #endif /* Renderer_hpp */

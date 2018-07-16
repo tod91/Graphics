@@ -6,6 +6,7 @@
 //  Copyright © 2017 Todor Ivanov. All rights reserved.
 //
 #include <stdio.h>
+#include <assert.h>
 #include "Window.hpp"
 
 Window::Window()
@@ -15,8 +16,10 @@ Window::Window()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
     
-    // Used only for MacOS. Make this usable only when u are compiling for Apples OS (hint: Use guards)
+    
+#ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 }
 
 
@@ -29,11 +32,8 @@ Window::~Window()
 bool Window::createWindow(const unsigned short width, const unsigned short heigh)
 {
     window = glfwCreateWindow(width, heigh, "Delaunay Triangulation", NULL, NULL);
-    if(window == NULL)
-    {
-        fprintf(stderr, "Error, cannot create window \"Delaunay Triangulation\"\n");
-        return false;
-    }
+    
+    assert(window != NULL && "Error, cannot create window \"Delaunay Triangulation\"\n");
     
     /* Make the window's context current */
     glfwMakeContextCurrent(window);

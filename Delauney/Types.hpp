@@ -11,7 +11,6 @@
 
 #define NULL 0
 
-
 struct Triangle;
 struct Node;
 

@@ -784,7 +784,7 @@ typedef struct GLFWmonitor GLFWmonitor;
  *
  *  @since Added in version 3.0.
  *
- *  @ingroup window
+ *  @ingroup windowo
  */
 typedef struct GLFWwindow GLFWwindow;
 

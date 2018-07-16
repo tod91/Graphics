@@ -27,9 +27,9 @@ Window::~Window()
 }
 
 
-bool Window::createWindow(const unsigned short width, const unsigned short heigh)
+bool Window::createWindow(const unsigned short width, const unsigned short heigh, const char* title)
 {
-    window = glfwCreateWindow(width, heigh, "Delaunay Triangulation", NULL, NULL);
+    window = glfwCreateWindow(width, heigh, title, NULL, NULL);
     
     if(!window)
         return false;
@@ -38,4 +38,10 @@ bool Window::createWindow(const unsigned short width, const unsigned short heigh
     glfwMakeContextCurrent(window);
     
     return true;
+}
+
+__attribute__((noinline))
+GLFWwindow* Window::getWindow() const
+{
+    return window;
 }

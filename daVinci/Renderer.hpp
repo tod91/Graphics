@@ -9,30 +9,22 @@
 #ifndef Renderer_hpp
 #define Renderer_hpp
 
-#include <memory>
+#include "ExportDefine.h"
 
-class Window;
+class Shader;
+class VertexBuffer;
+class VertexArray;
+class IndexBuffer;
+class VertexBufferLayout;
+class GLFWwindow;
 
-class Renderer
+class EXPORT Renderer
 {
 public:
-    Renderer(const unsigned short windowWidth, const unsigned short windowHeight);
+    Renderer();
     ~Renderer();
-    
-    void render();
-    
-    void releaseShaderSource(char* shaderSource);
-    void initGLResources();
-    void compileShader();
-private: // Methods
-    
-    bool    loadShaderSource(const char* shaderFileName, char** shaderSourceCode);
-    long    getShaderFileSize(FILE* fileHandle);
-    
-private: // Data
-    unsigned VBO;
-    
-    std::unique_ptr<Window> m_Window;
+   
+   void Draw(const VertexArray& va, const IndexBuffer& ibo, const Shader& shader, GLFWwindow*);
 };
 
 #endif /* Renderer_hpp */

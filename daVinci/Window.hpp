@@ -9,6 +9,7 @@
 #ifndef Window_hpp
 #define Window_hpp
 
+#include "ExportDefine.h"
 #include <glfw3.h>
 
 //=============================================================================
@@ -16,7 +17,7 @@
 ///         The windowing library we will be using is glfw.
 ///
 //=============================================================================
-class Window
+class EXPORT Window
 {
 public:
     
@@ -29,8 +30,8 @@ public:
     Window();
     ~Window();
     
-    bool createWindow(const unsigned short width, const unsigned short heigh);
-    GLFWwindow* getWindow(){ return window; }
+    bool createWindow(const unsigned short width, const unsigned short heigh, const char* title);
+    GLFWwindow* getWindow() const;
     
 private:
     GLFWwindow* window;

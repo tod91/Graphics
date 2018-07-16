@@ -5,15 +5,15 @@
 //  Created by Todor Ivanov on 5/22/17.
 //  Copyright © 2017 Todor Ivanov. All rights reserved.
 //
-#include <new>
+
 #include <stdlib.h>
 #include "Sorting.hpp"
 #include "Delaunay.hpp"
 
 Delaunay::Delaunay()
-: points(NULL)
+: points3D(NULL)
 , heights(NULL)
-, coords(NULL)
+, coords2D(NULL)
 , numOfPoints(0)
 {
 }
@@ -22,10 +22,10 @@ Delaunay::Delaunay()
 Delaunay::~Delaunay()
 {
     free(heights);
-    free(coords);
+    free(coords2D);
     
     heights = NULL;
-    coords = NULL;
+    coords2D = NULL;
 }
 
 
@@ -34,20 +34,20 @@ bool Delaunay::Triangulate(const char* file)
     if(GetFileInput(file))
         return false;
     
-    if(BottomUpMergeSort(points, numOfPoints))
+    if(BottomUpMergeSort(points3D, numOfPoints))
         return false;
     
-    //  NOTE:   after splitPointsArray() executes, points is no longer a valid
+    //  NOTE:   after splitpoints3DArray() executes, points3D is no longer a valid
     //          pointer and if you try and use it bad things will happen.
     if(SplitPointsArray())
         return false;
     
     InitializeMainTriangle();
-    triangulation.AddInitialPoint(coords[0]); // tuk ne sum siguren dali ne trqbva da e coords[1]
+    triangulation.AddInitialPoint(coords2D[0]); // tuk ne sum siguren dali ne trqbva da e coords2D[1]
     
     for(unsigned i = 1; i < numOfPoints - 1; ++i)
     {
-        triangulation.AddPoint(coords[i]);
+        triangulation.AddPoint(coords2D[i]);
     }
 
     LegalizeEdge();
@@ -65,32 +65,32 @@ bool Delaunay::LegalizeEdge()
 
 bool Delaunay::InitializeMainTriangle()
 {
-    float upperMostPoint = coords[0].y;
-    float lowerMostPoint = coords[0].y;
+    float upperMostPoint = coords2D[0].y;
+    float lowerMostPoint = coords2D[0].y;
     
     for(size_t i = 1; i < numOfPoints; ++i)
     {
-        if(upperMostPoint < coords[i].y)
-           upperMostPoint = coords[i].y;
+        if(upperMostPoint < coords2D[i].y)
+           upperMostPoint = coords2D[i].y;
         
-        if(lowerMostPoint > coords[i].y)
-           lowerMostPoint = coords[i].y;
+        if(lowerMostPoint > coords2D[i].y)
+           lowerMostPoint = coords2D[i].y;
     }
     
     float dy = upperMostPoint - lowerMostPoint;
-    float dx = coords[numOfPoints - 1].x - coords[0].x;
+    float dx = coords2D[numOfPoints - 1].x - coords2D[0].x;
     
     //  Main triangles vertices are in order from the leftmost vertex and traveling
     //  counter clockwise.
     //  @NOTE Do we need this? If not remove it and directly assign to triangulation.head->triangle
-    coords[numOfPoints].x = coords[0].x - dy;
-    coords[numOfPoints].y = lowerMostPoint;
+    coords2D[numOfPoints].x = coords2D[0].x - dy;
+    coords2D[numOfPoints].y = lowerMostPoint;
     
-    coords[numOfPoints + 1].x = coords[numOfPoints - 1].x + dy;
-    coords[numOfPoints + 1].y = lowerMostPoint;
+    coords2D[numOfPoints + 1].x = coords2D[numOfPoints - 1].x + dy;
+    coords2D[numOfPoints + 1].y = lowerMostPoint;
     
-    coords[numOfPoints + 2].x = coords[0].x + dx/2;
-    coords[numOfPoints + 2].y = upperMostPoint + dx/2;
+    coords2D[numOfPoints + 2].x = coords2D[0].x + dx/2;
+    coords2D[numOfPoints + 2].y = upperMostPoint + dx/2;
     
     triangulation.head  = new Node;
     if(!triangulation.head)
@@ -100,9 +100,9 @@ bool Delaunay::InitializeMainTriangle()
     }
 
     
-    triangulation.head->triangle.vertex[0] = coords[numOfPoints];
-    triangulation.head->triangle.vertex[1] = coords[numOfPoints + 1];
-    triangulation.head->triangle.vertex[2] = coords[numOfPoints + 2];
+    triangulation.head->triangle.vertex[0] = coords2D[numOfPoints];
+    triangulation.head->triangle.vertex[1] = coords2D[numOfPoints + 1];
+    triangulation.head->triangle.vertex[2] = coords2D[numOfPoints + 2];
     
     triangulation.head->next = NULL;
     
