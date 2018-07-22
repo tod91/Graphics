@@ -22,12 +22,13 @@ public:
     void Unbind() const;
     
     bool BuildShaderProgram();
+    void SetUniform4f(const std::string name, const float v1, const float v2, const float v3, const float v4);
     
 private: // METHODS
     bool     GetShaderSource();
     bool     CompileShader();
     bool     LinkShader();
-    unsigned GetUniformLocation(const std::string& name);
+    int GetUniformLocation(const std::string& name);
     
 private: // DATA
     char* vShaderSource;

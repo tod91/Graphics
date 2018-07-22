@@ -8,9 +8,9 @@
 
 #include "Shader.hpp"
 #include "GLError.h"
+// This sucks find a better use for rp malloc. in oredr to get the gainz i would need alot of rly small allocations
 #include "rpmalloc.h"
 #include <stdio.h>
-#include <iostream>
 
 static unsigned long GetFileSize(FILE* file)
 {
@@ -33,7 +33,6 @@ Shader::~Shader()
 {
     rpfree(vShaderSource);
     rpfree(fShaderSource);
-    
 }
 
 bool Shader::GetShaderSource()
@@ -44,27 +43,27 @@ bool Shader::GetShaderSource()
         fprintf(stderr, "Error, cannot open file %s\n", vShaderFilePath.c_str());
         return false;
     }
-    
+
     FILE* fShaderFile = fopen(fShaderFilePath.c_str(), "rb");
     if(!fShaderFile)
     {
         fprintf(stderr, "Error, cannot open file %s\n", fShaderFilePath.c_str());
         return false;
     }
-    
+
     unsigned long vfileSize = GetFileSize(vShaderFile);
     unsigned long ffileSize = GetFileSize(fShaderFile);
-    
+
     vShaderSource = (char*) rpmalloc(vfileSize);
     fShaderSource = (char*) rpmalloc(ffileSize);
-    
-    // add some error check
+
+    //TODO: add some error check
     fread(vShaderSource, 1, vfileSize, vShaderFile);
     fread(fShaderSource, 1, ffileSize, fShaderFile);
-    
+
     fclose(vShaderFile);
     fclose(vShaderFile);
-    
+
     return true;
 }
 
@@ -72,7 +71,7 @@ bool Shader::CompileShader()
 {
     int success;
     char infoLog[512];
-    
+
     m_vertexID = glCreateShader(GL_VERTEX_SHADER);
     GLCall(glShaderSource(m_vertexID, 1, &vShaderSource, NULL));
 
@@ -81,18 +80,24 @@ bool Shader::CompileShader()
     if(!success)
     {
         glGetShaderInfoLog(m_vertexID, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        puts("ERROR::SHADER::VERTEX::COMPILATION_FAILED");
+        printf("%s", infoLog);
+
+        return false;
     };
-    
+
     m_fragmentID = glCreateShader(GL_FRAGMENT_SHADER);
     GLCall(glShaderSource(m_fragmentID, 1, &fShaderSource, NULL));
-    
+
     GLCall(glCompileShader(m_fragmentID));
     glGetShaderiv(m_fragmentID, GL_COMPILE_STATUS, &success);
     if(!success)
     {
         glGetShaderInfoLog(m_vertexID, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+        puts("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED");
+        printf("%s", infoLog);
+
+        return false;
     };
 
     return true;
@@ -104,17 +109,21 @@ bool Shader::LinkShader()
     glAttachShader(m_ShaderProgramID, m_vertexID);
     glAttachShader(m_ShaderProgramID, m_fragmentID);
     glLinkProgram(m_ShaderProgramID);
-    
+
     int success;
     char infoLog[512];
+
     glGetProgramiv(m_ShaderProgramID, GL_LINK_STATUS, &success);
     if(!success)
     {
         glGetProgramInfoLog(m_ShaderProgramID, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+        puts("ERROR::SHADER::PROGRAM::LINKING_FAILED");
+        printf("%s", infoLog);
+
+        // think about whether u need to delete the shaders before returning false
         return false;
     }
-    
+
     glDeleteShader(m_vertexID);
     glDeleteShader(m_fragmentID);
     return true;
@@ -127,12 +136,22 @@ bool Shader::BuildShaderProgram()
         return false;
     if(!LinkShader())
         return false;
+
     return true;
 }
 
-unsigned Shader::GetUniformLocation(const std::string& name)
+void Shader::SetUniform4f(const std::string name, const float v1, const float v2, const float v3, const float v4)
 {
-    return 0;
+    GLCall(glUniform4f(GetUniformLocation(name), v1, v2, v3, v4));
+}
+
+int Shader::GetUniformLocation(const std::string& name)
+{
+    GLCall(int location = glGetUniformLocation(m_ShaderProgramID, name.c_str()));
+    if(location == -1)
+        printf("Warning: uniform %s doesnt exist", name.c_str());
+
+    return location;
 }
 
 void Shader::Bind() const

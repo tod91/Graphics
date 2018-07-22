@@ -11,7 +11,6 @@
 
 #include "ExportDefine.h"
 
-
 class EXPORT VertexBuffer
 {
 public:
@@ -20,6 +19,7 @@ public:
     
     void Bind() const;
     void Unbind() const;
+    
 private:
     unsigned mVBO_ID;
 };

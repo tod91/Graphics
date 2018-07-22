@@ -6,6 +6,7 @@
 //  Copyright © 2017 Todor Ivanov. All rights reserved.
 //
 #include "Window.hpp"
+#include <glfw3.h>
 
 Window::Window()
 {
@@ -40,7 +41,7 @@ bool Window::createWindow(const unsigned short width, const unsigned short heigh
     return true;
 }
 
-__attribute__((noinline))
+
 GLFWwindow* Window::getWindow() const
 {
     return window;

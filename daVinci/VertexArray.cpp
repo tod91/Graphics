@@ -11,9 +11,7 @@
 #include "VertexBufferLayout.hpp"
 #include "GLError.h"
 
- 
 VertexArray::VertexArray()
-
 {
     GLCall(glGenVertexArrays(1, &VAO_ID));
     Bind();
@@ -40,14 +38,13 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
     const auto& elements = layout.GetElements();
     unsigned long size = elements.size();
     unsigned int offset = 0;
+
     for(GLuint i = 0; i < size; ++i)
     {
         const auto& element = elements[i];
         GLCall(glEnableVertexAttribArray(i));
         GLCall(glVertexAttribPointer(i, element.count, element.type, element.normalized, layout.GetStride(), (const void*)offset));
-        
+
         offset += element.count * VertexBufferElement::GetSizeType(element.type);
     }
-    
-
 }

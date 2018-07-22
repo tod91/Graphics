@@ -1,0 +1,8 @@
+Delauney/build/*
+Delauney/obj/*
+*.xcodeproj
+*.xcworkspace
+daVinci/build/*
+daVinci/obj/*
+LearnOpenGL/build/*
+LearnOpenGL/obj/*

@@ -19,11 +19,11 @@ enum GLNumber
 
 struct VertexBufferElement
 {
-    uint32_t type;
-    GLint count;
-    GLboolean  normalized;
+    unsigned type;
+    int      count;
+    bool     normalized;
     
-    static unsigned int GetSizeType(unsigned int type)
+    static unsigned GetSizeType(unsigned int type)
     {
         switch(type)
         {
@@ -32,7 +32,7 @@ struct VertexBufferElement
             case GL_UNSIGNED_BYTE: return sizeof(GLubyte);
         }
         
-        ASSERT(false);
+        puts("Error: unsupported VBO type");
         return 0;
     }
 };
@@ -43,7 +43,7 @@ public:
     VertexBufferLayout();
     ~VertexBufferLayout();
     
-    void     Push(GLNumber num, int count, bool normalized);
+    void    Push(GLNumber num, int count, bool normalized);
     GLsizei GetStride() const { return  m_Stride; }
     
     //Optimize this with a move.
@@ -52,7 +52,6 @@ public:
 private:
     std::vector<VertexBufferElement> m_Elements;
     GLsizei m_Stride;
-
 };
 
 #endif /* VertexBufferLayout_hpp */

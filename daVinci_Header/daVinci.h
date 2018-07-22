@@ -1,4 +1,3 @@
-//#include "glfw3.h"
 #include <vector>
 #include <string>
 #include <OpenGL/gl3.h>
@@ -33,9 +32,8 @@ public:
     ~VertexBufferLayout();
     
     void     Push(GLNumber num, int count, bool normalized);
-    int GetStride() const;
+    int      GetStride() const;
     
-    //Optimize this with a move.
     const std::vector<VertexBufferElement> GetElements() const;
     
 private:
@@ -61,8 +59,6 @@ private:
 class IndexBuffer
 {
 public:
-    // In the future think of a way to get 16 bit integer support
-    // HINT look at int_fast16_t
     IndexBuffer(const unsigned* data, const unsigned count);
     ~IndexBuffer();
     
@@ -91,22 +87,21 @@ class Shader
 {
 public:
     Shader(const char* vShaderPath, const char* fShaderPath);
-    Shader();
     ~Shader();
     
     void Bind() const;
     void Unbind() const;
     
-    void AddShaders(const char* vShaderPath, const char* fShaderPath);
     bool BuildShaderProgram();
+    void SetUniform4f();
     
-private: // METHODS
+private:
     bool     GetShaderSource();
     bool     CompileShader();
     bool     LinkShader();
-    unsigned GetUniformLocation(const std::string& name);
+    int GetUniformLocation(const std::string& name);
     
-private: // DATA
+private:
     char* vShaderSource;
     char* fShaderSource;
     std::string vShaderFilePath;

@@ -10,23 +10,13 @@
 #define Window_hpp
 
 #include "ExportDefine.h"
-#include <glfw3.h>
 
-//=============================================================================
-/// @brief  A window class for displaying the graphic renderings on the screen.
-///         The windowing library we will be using is glfw.
-///
-//=============================================================================
+class GLFWwindow;
+
 class EXPORT Window
 {
 public:
     
-    //=============================================================================
-    /// @fn default ctor
-    ///
-    /// @NOTE glfwInit() must be successfully called before any of the functions in
-    ///       the Window class. This includes the ctor.
-    //=============================================================================
     Window();
     ~Window();
     

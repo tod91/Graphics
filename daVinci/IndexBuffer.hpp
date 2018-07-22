@@ -18,11 +18,12 @@ public:
     // HINT look at int_fast16_t
     IndexBuffer(const unsigned* data, const unsigned count);
     ~IndexBuffer();
-    
+
     void Bind() const;
     void Unbind() const;
     
     unsigned int GetCount() const { return mCount; }
+
 private:
     unsigned mIndices_ID;
     unsigned mCount;
