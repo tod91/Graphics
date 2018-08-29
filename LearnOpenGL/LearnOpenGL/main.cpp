@@ -17,12 +17,12 @@ int main()
     
     float positions[] =
     {
-         -0.5f, -.5f,  // top right
-          0.5f, -0.5f,  // bottom right
-          0.5f, 0.5f,  // bottom left
-         -0.5f, 0.5f,
+         -0.5f, -0.5f, 1.0, 1.0,
+          0.5f, -0.5f, 1.0, 0.0,
+          0.5f,  0.5f, 0.0, 0.0,
+         -0.5f,  0.5f, 0.0, 1.0
     };
-    unsigned indices[] = {  // note that we start f  rom 0!
+    unsigned indices[] = {  // note that we start from 0!
         0, 1, 2,
         0, 2, 3
     };
@@ -30,14 +30,24 @@ int main()
     
     Shader shader("../../../Shaders/VertexShader.vs","../../../Shaders/FragmentShader.fs");
     shader.BuildShaderProgram();
+    shader.Bind();
     
+    VertexBufferLayout layout;
     VertexArray va;
     VertexBuffer vbo(positions, sizeof(positions));
     IndexBuffer ibo(indices, 6);
-    VertexBufferLayout layout;
+    
+    
+    Texture texture("../../../Textures/wall.jpg");
+    texture.Bind();
+    shader.SetUniform1i("u_Texture", 0);
+    shader.SetUniform4f("u_Color", 0.0, 1.0, 0.0, 0.0);
+    
     
     layout.Push(GLNumber::FLOAT, 2, false);
+    layout.Push(GLNumber::FLOAT, 2, false);
     va.AddBuffer(vbo, layout);
+    
     
     Renderer renderer;
     while (!glfwWindowShouldClose(window.getWindow()))

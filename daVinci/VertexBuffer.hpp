@@ -21,7 +21,7 @@ public:
     void Unbind() const;
     
 private:
-    unsigned mVBO_ID;
+    unsigned m_VBO_ID;
 };
 
 #endif /* VertexBuffer_hpp */

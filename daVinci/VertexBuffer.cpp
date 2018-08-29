@@ -11,19 +11,19 @@
 
 VertexBuffer::VertexBuffer(const void* data, const unsigned size)
 {
-    GLCall(glGenBuffers(1, &mVBO_ID));
+    GLCall(glGenBuffers(1, &m_VBO_ID));
     Bind();
     GLCall(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
 }
  
 VertexBuffer::~VertexBuffer()
 {
-    GLCall(glDeleteBuffers(1, &mVBO_ID));
+    GLCall(glDeleteBuffers(1, &m_VBO_ID));
 }
 
 void VertexBuffer::Bind() const
 {
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, mVBO_ID));
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ID));
 }
 
 void VertexBuffer::Unbind() const

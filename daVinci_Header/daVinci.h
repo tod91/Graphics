@@ -37,7 +37,7 @@ public:
     const std::vector<VertexBufferElement> GetElements() const;
     
 private:
-    std::vector<VertexBufferElement> m_Elements;
+    //std::vector<VertexBufferElement> m_Elements;
     int m_Stride;
     
 };
@@ -93,7 +93,8 @@ public:
     void Unbind() const;
     
     bool BuildShaderProgram();
-    void SetUniform4f();
+    void SetUniform4f(const std::string name, const float v1, const float v2, const float v3, const float v4);
+    void SetUniform1i(const std::string name, int v1);
     
 private:
     bool     GetShaderSource();
@@ -123,4 +124,22 @@ public:
     
 private:
     GLFWwindow* window;
+};
+
+class Texture
+{
+public:
+    Texture(const std::string& path);
+    ~Texture();
+    
+    void Bind(unsigned slot = 0) const;
+    void Unbind() const;
+    
+private:
+    std::string m_FilePath;
+    unsigned m_TextureID;
+    unsigned char* m_TextureBuffer;
+    int m_Width, m_Height;
+    int m_BPP;
+    
 };

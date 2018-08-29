@@ -81,7 +81,7 @@ bool Shader::CompileShader()
     {
         glGetShaderInfoLog(m_vertexID, 512, NULL, infoLog);
         puts("ERROR::SHADER::VERTEX::COMPILATION_FAILED");
-        printf("%s", infoLog);
+        printf("%s\n", infoLog);
 
         return false;
     };
@@ -95,7 +95,7 @@ bool Shader::CompileShader()
     {
         glGetShaderInfoLog(m_vertexID, 512, NULL, infoLog);
         puts("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED");
-        printf("%s", infoLog);
+        printf("%s\n", infoLog);
 
         return false;
     };
@@ -140,19 +140,26 @@ bool Shader::BuildShaderProgram()
     return true;
 }
 
-void Shader::SetUniform4f(const std::string name, const float v1, const float v2, const float v3, const float v4)
+void Shader::SetUniform4f(const std::string name, float v1, float v2, float v3, float v4)
 {
     GLCall(glUniform4f(GetUniformLocation(name), v1, v2, v3, v4));
+}
+
+void Shader::SetUniform1i(const std::string name, int v1)
+{
+    GLCall(glUniform1i(GetUniformLocation(name), v1));
 }
 
 int Shader::GetUniformLocation(const std::string& name)
 {
     GLCall(int location = glGetUniformLocation(m_ShaderProgramID, name.c_str()));
     if(location == -1)
-        printf("Warning: uniform %s doesnt exist", name.c_str());
+        printf("Warning: uniform %s doesnt exist\n", name.c_str());
 
     return location;
 }
+
+
 
 void Shader::Bind() const
 {
