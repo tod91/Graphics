@@ -37,7 +37,7 @@ public:
     const std::vector<VertexBufferElement> GetElements() const;
     
 private:
-    //std::vector<VertexBufferElement> m_Elements;
+    std::vector<VertexBufferElement> m_Elements;
     int m_Stride;
     
 };

@@ -17,9 +17,9 @@ int main()
     
     float positions[] =
     {
-         -0.5f, -0.5f, 1.0, 1.0,
+         -0.5f, -0.5f, 0.0, 0.0,
           0.5f, -0.5f, 1.0, 0.0,
-          0.5f,  0.5f, 0.0, 0.0,
+          0.5f,  0.5f, 1.0, 1.0,
          -0.5f,  0.5f, 0.0, 1.0
     };
     unsigned indices[] = {  // note that we start from 0!
@@ -34,6 +34,7 @@ int main()
     
     VertexBufferLayout layout;
     VertexArray va;
+
     VertexBuffer vbo(positions, sizeof(positions));
     IndexBuffer ibo(indices, 6);
     
