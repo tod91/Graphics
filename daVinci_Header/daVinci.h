@@ -19,10 +19,11 @@ enum GLNumber
 class Renderer
 {
 public:
-    Renderer();
+    Renderer(bool wireFrameMode = false);
     ~Renderer();
     
-    void Draw(const VertexArray& va, const IndexBuffer& ibo, const Shader& shader, GLFWwindow*);
+    void DrawArrays(const VertexArray& va, const Shader& shader, GLFWwindow* window, int size);
+    void Draw(const VertexArray& va, const IndexBuffer& ibo, const Shader& shader, GLFWwindow* window);
 };
 
 class VertexBufferLayout
@@ -93,7 +94,7 @@ public:
     void Unbind() const;
     
     bool BuildShaderProgram();
-    void SetUniform4f(const std::string name, const float v1, const float v2, const float v3, const float v4);
+    void SetUniform4f(const std::string name, float v1, float v2, float v3, float v4);
     void SetUniform1i(const std::string name, int v1);
     
 private:
@@ -129,7 +130,7 @@ private:
 class Texture
 {
 public:
-    Texture(const std::string& path);
+    Texture(const std::string& path, const bool hasAlpha = false, unsigned slot = 0);
     ~Texture();
     
     void Bind(unsigned slot = 0) const;

@@ -14,7 +14,7 @@
 class EXPORT Texture
 {
 public:
-    Texture(const std::string& path);
+    Texture(const std::string& path, const bool hasAlpha = false, unsigned slot = 0);
     ~Texture();
     
     void Bind(unsigned slot = 0) const;
