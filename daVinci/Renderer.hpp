@@ -19,11 +19,10 @@ class GLFWwindow;
 class EXPORT Renderer
 {
 public:
-    Renderer(bool wireFrameMode = false);
+    Renderer();
     ~Renderer();
-    
-    void DrawArrays(const VertexArray& va, const Shader& shader, GLFWwindow* window, int size);
-    void Draw(const VertexArray& va, const IndexBuffer& ibo, const Shader& shader, GLFWwindow* window);
+   
+   void Draw(const VertexArray& va, const IndexBuffer& ibo, const Shader& shader, GLFWwindow* window);
 };
 
 #endif /* Renderer_hpp */

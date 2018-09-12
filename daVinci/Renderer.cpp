@@ -13,10 +13,9 @@
 #include "VertexBufferLayout.hpp"
 #include <glfw3.h>
 
-Renderer::Renderer(bool wireFrameMode)
+Renderer::Renderer()
 {
-    if(wireFrameMode)
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 }
 
 Renderer::~Renderer()
@@ -30,16 +29,6 @@ void Renderer::Draw(const VertexArray& va, const IndexBuffer& ibo, const Shader&
     ibo.Bind();
     shader.Bind();
     GLCall(glDrawElements(GL_TRIANGLES, ibo.GetCount(), GL_UNSIGNED_INT, nullptr));
-    glfwSwapBuffers(window);
-    glfwPollEvents();
-}
-
-
-void Renderer::DrawArrays(const VertexArray& va, const Shader& shader, GLFWwindow* window, int size)
-{
-    va.Bind();
-    shader.Bind();
-    GLCall(glDrawArrays(GL_TRIANGLES, 0, size));
     glfwSwapBuffers(window);
     glfwPollEvents();
 }

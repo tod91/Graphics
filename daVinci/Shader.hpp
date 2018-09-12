@@ -12,7 +12,6 @@
 #include "ExportDefine.h"
 #include <string>
 
-
 class EXPORT Shader
 {
 public:
